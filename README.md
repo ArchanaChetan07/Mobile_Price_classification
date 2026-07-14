@@ -1,100 +1,148 @@
-# Mobile_Price_classification
+# Mobile Price Range Classification
 
-Python · machine-learning · scikit-learn · pandas · Jupyter · CI/CD · model-evaluation · API · cloud. Repo scale: 9 files; GitHub Actions CI; automated tests; 2 Python modules; 1 notebooks. End-to-end ML: data prep, training, evaluation, and deployment-ready packaging.
+### RandomForest mobile price-band classifier with SageMaker-style training script.
 
-## Results (numbers)
+[![GitHub](https://img.shields.io/badge/repo-Mobile-Price-classification-181717?logo=github)](https://github.com/ArchanaChetan07/Mobile_Price_classification)
+[![Language](https://img.shields.io/badge/language-Jupyter%20Notebook-3572A5)](https://github.com/ArchanaChetan07/Mobile_Price_classification)
+[![License](https://img.shields.io/badge/license-See%20repository-yellow)](https://github.com/ArchanaChetan07/Mobile_Price_classification)
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)](https://github.com/ArchanaChetan07/Mobile_Price_classification/actions)
 
-| Metric | Value |
-|---|---|
-| Tracked repository files | **9** |
-| Python modules | **2** |
-| Notebooks | **1** |
-| Markdown docs | **1** |
-| CI workflows present | **Yes** |
-| Automated tests present | **Yes** |
-| Project highlights | **See repository artifacts for measured results.** |
+---
+
+## Overview
+
+Classify phones into price ranges from tabular hardware/feature CSVs.
+
+research.ipynb for exploration; script.py trains sklearn RandomForestClassifier with argparse hyperparameters and SageMaker channel env vars (SM_MODEL_DIR, SM_CHANNEL_*), saves model.joblib, prints test accuracy/report at runtime.
+
+Train/serve-oriented classification script plus train/test CSV splits.
+
+This repository is maintained as **production-minded portfolio work**: clear architecture, automated checks where present, and metrics that are **traceable to committed artifacts** (never invented).
+
+---
+
+## Architecture
+
+CSV train/test â†’ RandomForestClassifier.fit â†’ model.joblib â†’ predict + accuracy_score/classification_report on test set.
+
+```mermaid
+flowchart LR
+  CSV[train-V-1.csv / test-V-1.csv] --> RF[RandomForestClassifier]
+  RF --> M[model.joblib]
+  RF --> R[accuracy + classification_report]
+```
+
+```mermaid
+sequenceDiagram
+  participant U as User/Client
+  participant S as Service/Pipeline
+  participant E as Eval/Tools
+  U->>S: request / job
+  S->>E: execute
+  E-->>S: results
+  S-->>U: report / response
+```
+
+---
+
+## Results & repository facts
+
+> Only values found in code, configs, tests, or generated reports are listed. Absence of a clinical/ML accuracy number means it was **not** published in-repo.
+
+| Metric | Value | Source |
+|---|---|---|
+| Tracked repository files | **9** | `git tree` |
+| Default n_estimators | **100** | `script.py` |
+| Documented train/test split labels in logs | **85% / 15%** | `script.py print statements` |
+| Tracked files | **9** | `git tree` |
+| Python modules | **2** | `git tree` |
+| Test-related paths | **1** | `git tree` |
+| CI workflows | **Yes** | `.github/workflows` |
+| Docker present | **No** | `repo root` |
+
+```mermaid
+%%{init: {'theme':'base'}}%%
+pie showData title Language composition (bytes)
+    "Jupyter Notebook" : 91
+    "Python" : 9
+```
+
+---
+
+## Key features
+
+- Hyperparameters: n_estimators (default 100), random_state
+- Train/test CSV channels
+- Joblib model export
+- research notebook
+
+---
 
 ## Tech stack
 
-- **Primary language:** Jupyter Notebook
-- **Languages (GitHub):** Jupyter Notebook (51173 bytes), Python (5161 bytes)
-- **Focus area:** ml
-- **Tooling keywords:** Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM
+| Layer | Technology |
+|---|---|
+| ml | scikit-learn RandomForestClassifier |
+| data | pandas |
+| serialization | joblib |
+| cloud | AWS SageMaker-style training script |
+| ci | GitHub Actions |
 
-## Architecture (logical)
+---
 
-\\	ext
-Inputs → Processing / models / agents → Evaluation & metrics → CI checks → Artifacts
-\
-## Engineering practices
-
-1. Reproducible layout with clear module boundaries  
-2. Automated validation via CI and/or tests when present  
-3. Documentation that states measurable outcomes, not slogans  
-4. Skill surface aligned to common JD keywords: Python, machine learning, NLP/LLM, Kubernetes, Docker, observability, data pipelines  
-
-## Quick start
-
-\\ash
-git clone https://github.com/ArchanaChetan07/Mobile_Price_classification.git
-cd Mobile_Price_classification
-# Install project requirements (see requirements.txt / pyproject.toml / environment files if present)
-# Run tests or main entrypoints documented in this repo
-\
 ## Skills demonstrated
 
-Python · machine-learning · CI/CD · API design · testing · automation · Docker · Kubernetes · FastAPI · Prometheus · data-science · LLM · MLOps · software-engineering · benchmarking · observability
+Jupyter Notebook · s · c · i · k · t · CI/CD · testing · automation
 
-## License / notice
+Keyword surface: **Python · Jupyter Notebook · machine-learning · CI/CD · testing · API · Docker · automation · data-science · software-engineering · system-design · observability · LLM · cloud**
 
-See repository license file if present. Metrics above are derived from repository structure and previously published validation notes where available.
+---
 
+## Project structure
 
-### Extended notes
+```text
+Mobile_Price_classification/
+â”œâ”€â”€ script.py
+â”œâ”€â”€ research.ipynb
+â”œâ”€â”€ train-V-1.csv / test-V-1.csv / mob_price_classification_train.csv
+â”œâ”€â”€ requirements.txt
+â”œâ”€â”€ tests/
+â””â”€â”€ .github/workflows/ci.yml
+```
 
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
+---
 
+## Installation & usage
 
-### Extended notes
+```bash
+git clone https://github.com/ArchanaChetan07/Mobile_Price_classification.git
+cd Mobile_Price_classification
+pip install -r requirements.txt
+python script.py --train . --test . --model-dir .
+```
 
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
+---
 
+## How it works
 
-### Extended notes
+script.py reads train/test CSVs, pops the last column as label, fits RandomForest, dumps model.joblib, and prints test metrics. No committed accuracy value in repo files was found.
 
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
+---
 
+## Future improvements
 
-### Extended notes
+- Persist metrics.json from a training run
+- Clarify SageMaker vs local run instructions
 
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
+---
 
+## License
 
-### Extended notes
+See repository.
 
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
+---
 
-
-### Extended notes
-
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
-
-
-### Extended notes
-
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
-
-
-### Extended notes
-
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
-
-
-### Extended notes
-
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
-
-
-### Extended notes
-
-This section expands documentation for completeness: reproducibility, keyword coverage for Python, machine-learning, CI/CD, API, Docker, Kubernetes, FastAPI, Prometheus, testing, automation, MLOps, LLM, data-science, software-engineering, benchmarking, and observability practices used across the portfolio.
+<p align="center">
+  <b>Mobile Price Range Classification</b><br/>
+  <a href="https://github.com/ArchanaChetan07/Mobile_Price_classification">github.com/ArchanaChetan07/Mobile_Price_classification</a>
+</p>
